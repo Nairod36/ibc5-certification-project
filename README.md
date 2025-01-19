@@ -1,10 +1,10 @@
-# IBC-5 Certification Project
+# IBC-5 Certification Project 🚀
 
-Ce dépôt a pour objectif de mettre en place une architecture **Foundry** (pour la partie smart contracts) et **React** (pour le frontend), ainsi qu'un dossier dédié à la configuration Avalanche Subnet et un dossier pour stocker/organiser les métadonnées (NFT).
+Bienvenue dans le dépôt du projet **IBC-5 Certification** ! Ce repo met en place une architecture **Foundry** (pour la partie smart contracts) et **React** (pour le frontend), ainsi qu'un dossier dédié à la configuration Avalanche Subnet et un dossier pour les métadonnées NFT.
 
 ---
-
-## Table des matières
+  
+## Table des matières 📖
 1. [Structure du projet](#structure-du-projet)
 2. [Pré-requis](#pré-requis)
 3. [Installation et Configuration](#installation-et-configuration)
@@ -23,7 +23,7 @@ Ce dépôt a pour objectif de mettre en place une architecture **Foundry** (pour
 
 ---
 
-## Structure du projet
+## Structure du projet 🏗
 
 L’objectif est d’obtenir une arborescence proche de la suivante :
 
@@ -61,17 +61,17 @@ ibc5-certification-project/
 ├── .gitignore
 └── README.md
 
-- **avalanche/** : Configurer et lancer votre Subnet personnalisé (Avalanche).
+- **avalanche/** : Configurer et lancer votre **Subnet** personnalisé (Avalanche).
 - **foundry.toml** : Fichier de configuration Foundry.
 - **metadata/** : Stocker vos exemples de métadonnées NFT et scripts d’upload IPFS.
 - **script/** : Scripts Foundry (en Solidity ou TS) pour le déploiement et l’interaction.
 - **src/** : Vos contrats Solidity (MyProgramNFT, MyYearNFT, etc.).
 - **test/** : Tests Foundry pour valider la logique de vos smart contracts.
-- **frontend/** : Application React (avec un panel d’admin et un portail de vérification).
+- **frontend/** : Application React (panel d’admin + portail de vérification).
 
 ---
 
-## Pré-requis
+## Pré-requis ⚙️
 
 - **Node.js** (version 14+ recommandée)
 - **npm** ou **yarn**
@@ -81,7 +81,7 @@ ibc5-certification-project/
 
 ---
 
-## Installation et Configuration
+## Installation et Configuration 🔧
 
 ### 1. Cloner le projet
 
@@ -105,7 +105,7 @@ Vérifiez l’installation :
 forge --version
 
 3. Initialiser la partie Foundry
-	1.	Initialisation (si ce n’est pas déjà fait) :
+	1.	Initialisation (si pas déjà fait) :
 
 forge init .
 
@@ -132,7 +132,7 @@ touch admin/AdminPanel.jsx
 touch public/VerificationPortal.jsx
 
 
-	•	Vous pouvez configurer un .env dans frontend/ pour gérer l’adresse RPC du subnet, l’adresse de vos contrats, etc.
+	•	Vous pouvez configurer un .env dans frontend/ pour gérer l’URL RPC du subnet, l’adresse de vos contrats, etc.
 
 5. Démarrer le Subnet Avalanche (exemple)
 
@@ -150,9 +150,9 @@ echo "=== Déploiement local du subnet ESGI ==="
 # avalanche subnet deploy esgiSubnet
 # etc.
 
-(Il faudra adapter selon votre configuration réelle.)
+(À adapter selon votre configuration réelle.)
 
-Utilisation
+Utilisation 🌐
 
 A. Build & Test des contrats (Foundry)
 
@@ -174,7 +174,8 @@ forge test --match-test testCreationNFT
 
 B. Scripts de déploiement (Foundry)
 
-Dans script/, vous trouverez (par exemple) Deploy.s.sol, UpdateNFT.s.sol, etc. Pour exécuter un script :
+Dans script/, vous trouverez (par exemple) Deploy.s.sol, UpdateNFT.s.sol, etc.
+Pour exécuter un script :
 
 forge script script/Deploy.s.sol \
   --rpc-url http://127.0.0.1:9650/ext/bc/<SUBNET_ID>/rpc \
@@ -189,7 +190,7 @@ C. Lancement du Frontend
 cd frontend
 
 
-	2.	Installez les dépendances (si non fait) :
+	2.	Installez les dépendances (si nécessaire) :
 
 npm install
 
@@ -200,9 +201,9 @@ npm start
 
 
 
-L’application sera disponible, en général, sur http://localhost:3000.
+L’application sera disponible sur http://localhost:3000.
 
-Arborescence finale
+Arborescence finale 📂
 
 Une fois tout configuré, vous devriez avoir :
 
@@ -245,15 +246,15 @@ ibc5-certification-project/
 ├── .gitignore
 └── README.md
 
-Fichiers importants
+Fichiers importants ✨
 	•	.env.example : Exemple de configuration d’environnement (RPC_URL, PRIVATE_KEY, etc.).
 	Note : N’oubliez pas de créer un .env (qui ne sera pas commité) avec vos vraies données sensibles.
 	•	avalanche/README.md : Explications sur la configuration et le lancement de votre Subnet Avalanche.
-	•	foundry.toml : Paramètres Foundry (version Solidity, chemins, etc.).
-	•	frontend/README.md : Documentation spécifique au frontend (scripts npm, dépendances, etc.).
-	•	README.md (ce fichier) : Guide global pour tout le projet.
+	•	foundry.toml : Paramètres Foundry (version de Solidity, chemins, etc.).
+	•	frontend/README.md : Documentation spécifique au frontend (scripts npm, dépendances…).
+	•	README.md (ce fichier) : Guide global pour l’ensemble du projet.
 
-Ressources et Documentation
+Ressources et Documentation 📚
 	•	Foundry Book : https://book.getfoundry.sh/
 	•	Avalanche CLI : https://github.com/ava-labs/avalanche-cli
 	•	React : https://reactjs.org/docs/getting-started.html
@@ -261,6 +262,5 @@ Ressources et Documentation
 	•	OpenZeppelin (librairies Solidity) : https://docs.openzeppelin.com/contracts/
 
 Pour toute question ou suggestion, n’hésitez pas à ouvrir une issue ou à soumettre une pull request.
-
-Bon développement !
+Happy hacking! 😎
 
