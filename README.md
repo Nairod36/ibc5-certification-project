@@ -23,44 +23,6 @@ Bienvenue dans le dépôt du projet **IBC-5 Certification** ! Ce repo met en pla
 
 ---
 
-## Structure du projet 🏗
-
-L’objectif est d’obtenir une arborescence proche de la suivante :
-
-ibc5-certification-project/
-├── avalanche/
-│   ├── config/
-│   ├── scripts/
-│   └── README.md
-├── foundry.toml
-├── lib/
-├── metadata/
-│   ├── examples/
-│   └── ipfs/
-├── script/
-│   ├── Deploy.s.sol
-│   ├── UpdateNFT.s.sol
-│   └── RevokeNFT.s.sol
-├── src/
-│   ├── MyProgramNFT.sol
-│   ├── MyYearNFT.sol
-│   └── NFTFactory.sol
-├── test/
-│   ├── MyProgramNFT.t.sol
-│   └── MyYearNFT.t.sol
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── admin/
-│   │   │   └── AdminPanel.jsx
-│   │   └── public/
-│   │       └── VerificationPortal.jsx
-│   ├── package.json
-│   └── README.md
-├── .env.example
-├── .gitignore
-└── README.md
-
 - **avalanche/** : Configurer et lancer votre **Subnet** personnalisé (Avalanche).
 - **foundry.toml** : Fichier de configuration Foundry.
 - **metadata/** : Stocker vos exemples de métadonnées NFT et scripts d’upload IPFS.
@@ -234,14 +196,7 @@ ibc5-certification-project/
 │   ├── MyProgramNFT.t.sol
 │   └── MyYearNFT.t.sol
 ├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── admin/
-│   │   │   └── AdminPanel.jsx
-│   │   └── public/
-│   │       └── VerificationPortal.jsx
-│   ├── package.json
-│   └── README.md
+│   
 ├── .env.example
 ├── .gitignore
 └── README.md
