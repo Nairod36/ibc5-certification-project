@@ -26,7 +26,8 @@ contract NFTFactoryTest is Test {
     function testFactoryCreateCertificate() public {
         string memory studentId = "12345";
         string memory tokenURI = "Qm123...";
-        uint256 tokenId = factory.createCertificate(studentId, tokenURI);
+        string memory year = "2022 - 2025";
+        uint256 tokenId = factory.createCertificate(studentId, tokenURI, year);
 
         assertEq(tokenId, 0);
         assertEq(certificateContract.tokenCounter(), 1);
@@ -37,7 +38,8 @@ contract NFTFactoryTest is Test {
     function testFactoryCreatePerformance() public {
         string memory studentId = "12345";
         string memory tokenURI = "Qm123...";
-        uint256 tokenId = factory.createPerformance(studentId, tokenURI);
+        string memory year = "2022 - 2025";
+        uint256 tokenId = factory.createPerformance(studentId, tokenURI, year);
 
         assertEq(tokenId, 0);
         assertEq(performanceContract.tokenCounter(), 1);
@@ -50,10 +52,11 @@ contract NFTFactoryTest is Test {
         string memory studentId2 = "67890";
         string memory tokenURI1 = "Qm123...";
         string memory tokenURI2 = "Qm456...";
+        string memory year = "2022 - 2025";
 
-        uint256 cert1 = factory.createCertificate(studentId1, tokenURI1);
-        uint256 cert2 = factory.createCertificate(studentId2, tokenURI2);
-        uint256 perf1 = factory.createPerformance(studentId1, tokenURI1);
+        uint256 cert1 = factory.createCertificate(studentId1, tokenURI1, year);
+        uint256 cert2 = factory.createCertificate(studentId2, tokenURI2, year);
+        uint256 perf1 = factory.createPerformance(studentId1, tokenURI1, year);
 
         assertEq(cert1, 0);
         assertEq(cert2, 1);
