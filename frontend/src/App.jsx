@@ -12,6 +12,7 @@ import NotFound from './pages/NotFound';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
 import { config } from './config/wagmi.config'
+import UpdateProgram from './components/Admin/UpdateProgram';
 const queryClient = new QueryClient()
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/admin" element={<AdminPanel />} />
+              <Route path="/update-program/:certificateId" element={<UpdateProgram />} />
               <Route path="/verify" element={<VerificationPortal />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/nft/:tokenId" element={<NFTDetails />} />
