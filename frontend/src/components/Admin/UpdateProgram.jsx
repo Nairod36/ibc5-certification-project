@@ -19,6 +19,7 @@ import {
 } from "wagmi";
 import { config, contracts } from "../../config/wagmi.config";
 import { readContract } from "@wagmi/core";
+import { v4 as uuidv4 } from "uuid";
 
 export const UpdateProgram = () => {
   const { certificateId } = useParams();
@@ -90,7 +91,6 @@ export const UpdateProgram = () => {
             functionName: "getPerformanceInfos",
             args: [i],
           });
-          console.log(result);
 
           const yearMetadataURI = result.ipfsCID;
 
@@ -149,12 +149,15 @@ export const UpdateProgram = () => {
       };
 
       // Uploader le nouveau programme sur IPFS
+      const uniqueId = uuidv4();
+      const fileName = `PGM_${uniqueId}.json`;
       const dataStr = JSON.stringify(updatedProgram, null, 2);
-      const file = new File([dataStr], `PGM_${Date.now()}.json`, {
+      const file = new File([dataStr], fileName, {
         type: "application/json",
       });
       const upload = await pinata.upload.file(file);
       const newProgramURI = await pinata.gateways.convert(upload.IpfsHash);
+      const deleted = await pinata.unpin([uri])
 
       // Mettre à jour le contrat sur la blockchain
       writeContract({
