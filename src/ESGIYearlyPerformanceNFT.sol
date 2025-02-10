@@ -3,95 +3,115 @@ pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./IESGINFT.sol";
 
 /**
  * @title ESGIYearlyPerformanceNFT
  * @dev Contrat NFT représentant la performance académique annuelle d'un étudiant.
  */
-contract ESGIYearlyPerformanceNFT is ERC721URIStorage, Ownable {
+contract ESGIYearlyPerformanceNFT is ERC721URIStorage, Ownable, IESGINFT {
+    /// @notice Mapping des performances académiques par Token ID
+    mapping(uint256 => NFTInfo) private performances;
+
+    /// @notice Compteur de tokens pour générer des IDs uniques
     uint256 public tokenCounter;
 
-    constructor() ERC721("ESGIYearlyPerformanceNFT", "ESGIPERF") Ownable(msg.sender) {
+    /**
+     * @notice Initialise le contrat et définit le propriétaire
+     */
+    constructor()
+        ERC721("ESGIYearlyPerformanceNFT", "ESGIPERF")
+        Ownable(msg.sender)
+    {
         tokenCounter = 0;
     }
 
-    // Structure pour stocker les informations de performance annuelle
-    struct PerformanceData {
-        string studentId;
-        string year; 
-        string ipfsCID; // CID pointant vers les métadonnées sur IPFS
-        string status; // Ex: "ACTIVE", "REVOKED"
-        uint256 issuedDate;
-        string comments;
-    }
+    /// @notice Événement émis lorsqu'une performance académique est créée
+    /// @param tokenId Identifiant unique du NFT de performance
+    /// @param studentId Identifiant de l'étudiant associé à la performance
+    event PerformanceCreated(uint256 tokenId, string studentId);
 
-    // Mapping du tokenId vers les données de performance
-    mapping(uint256 => PerformanceData) public performances;
+    /// @notice Événement émis lorsqu'une performance académique est mise à jour
+    /// @param tokenId Identifiant unique du NFT mis à jour
+    /// @param newIpfsCID Nouveau CID IPFS des métadonnées
+    event PerformanceUpdated(uint256 tokenId, string newIpfsCID);
 
-    // Événements pour suivre la création, la mise à jour et la révocation
-    event PerformanceCreated(uint256 tokenId, string studentId, string year);
-    event PerformanceUpdated(uint256 tokenId, string newIpfsCID, string newStatus);
+    /// @notice Événement émis lorsqu'une performance académique est révoquée
+    /// @param tokenId Identifiant unique du NFT révoqué
     event PerformanceRevoked(uint256 tokenId);
 
-
     /**
-     * @dev Crée un nouveau NFT de performance annuelle.
-     * @param _studentId L'identifiant de l'étudiant.
-     * @param _year L'année académique (ex: "3rd Year").
-     * @param _ipfsCID Le CID des métadonnées sur IPFS.
-     * @param _comments Commentaires relatifs à la performance.
-     * @return tokenId Le tokenId du NFT créé.
+     * @notice Crée un NFT représentant la performance académique annuelle d'un étudiant
+     * @dev Le NFT est enregistré sous forme de jeton ERC-721 et ses métadonnées sont stockées sur IPFS
+     * @param _studentId Identifiant unique de l'étudiant
+     * @param _ipfsCID CID IPFS des métadonnées de la performance
+     * @param _year Année académique concernée
+     * @return tokenId Identifiant du NFT créé
      */
     function createPerformance(
         string memory _studentId,
-        string memory _year,
         string memory _ipfsCID,
-        string memory _comments
+        string memory _year
     ) public onlyOwner returns (uint256) {
         uint256 newTokenId = tokenCounter;
         _safeMint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, _ipfsCID);
-        performances[newTokenId] = PerformanceData({
+        performances[newTokenId] = NFTInfo({
+            tokenId: newTokenId,
             studentId: _studentId,
-            year: _year,
             ipfsCID: _ipfsCID,
-            status: "ACTIVE",
-            issuedDate: block.timestamp,
-            comments: _comments
+            year: _year
         });
         tokenCounter++;
-        emit PerformanceCreated(newTokenId, _studentId, _year);
+        emit PerformanceCreated(newTokenId, _studentId);
         return newTokenId;
     }
 
     /**
-     * @dev Met à jour les métadonnées et le statut d'une performance existante.
-     * @param _tokenId Le tokenId du NFT à mettre à jour.
-     * @param _newIpfsCID Le nouveau CID des métadonnées.
-     * @param _newStatus Le nouveau statut de la performance.
-     * @param _newComments Nouveaux commentaires.
+     * @notice Met à jour les métadonnées d'un NFT de performance académique
+     * @dev Seul le propriétaire du contrat peut exécuter cette fonction
+     * @param _tokenId Identifiant du NFT à mettre à jour
+     * @param _newIpfsCID Nouveau CID IPFS des métadonnées mises à jour
      */
     function updatePerformance(
         uint256 _tokenId,
-        string memory _newIpfsCID,
-        string memory _newStatus,
-        string memory _newComments
+        string memory _newIpfsCID
     ) public onlyOwner {
         require(_ownerOf(_tokenId) != address(0), "Token ID n'existe pas");
-        performances[_tokenId].ipfsCID = _newIpfsCID;
-        performances[_tokenId].status = _newStatus;
-        performances[_tokenId].comments = _newComments;
         _setTokenURI(_tokenId, _newIpfsCID);
-        emit PerformanceUpdated(_tokenId, _newIpfsCID, _newStatus);
+        emit PerformanceUpdated(_tokenId, _newIpfsCID);
     }
 
     /**
-     * @dev Révoque une performance en modifiant son statut.
-     * @param _tokenId Le tokenId du NFT à révoquer.
+     * @notice Révoque une performance académique
+     * @dev La révocation n'efface pas le NFT, mais le désactive sur l'application
+     * @param _tokenId Identifiant du NFT à révoquer
      */
     function revokePerformance(uint256 _tokenId) public onlyOwner {
         require(_ownerOf(_tokenId) != address(0), "Token ID n'existe pas");
-        performances[_tokenId].status = "REVOKED";
         emit PerformanceRevoked(_tokenId);
+    }
+
+    /**
+     * @notice Récupère les informations d'une performance académique spécifique
+     * @param _tokenId Identifiant du NFT à récupérer
+     * @return Structure NFTInfo contenant les détails de la performance
+     */
+    function getNFTInfos(
+        uint256 _tokenId
+    ) external view returns (NFTInfo memory) {
+        return performances[_tokenId];
+    }
+
+    /**
+     * @notice Récupère la liste de toutes les performances académiques enregistrées
+     * @return Tableau contenant toutes les structures NFTInfo des performances
+     */
+    function getAllNFTs() external view returns (NFTInfo[] memory) {
+        NFTInfo[] memory allPerf = new NFTInfo[](tokenCounter);
+        for (uint256 i = 0; i < tokenCounter; i++) {
+            allPerf[i] = performances[i];
+        }
+        return allPerf;
     }
 }

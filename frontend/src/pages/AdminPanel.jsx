@@ -1,28 +1,50 @@
-import React, { useState } from 'react';
-import { Container, Tabs, Tab } from 'react-bootstrap';
-import CreateNFT from '../components/Admin/CreateNFT';
-import UpdateNFT from '../components/Admin/UpdateNFT';
-import RevokeNFT from '../components/Admin/RevokeNFT';
-import NFTList from '../components/Admin/NFTList';
+import React, { useState } from "react";
+import { Container, Tabs, Tab } from "react-bootstrap";
+import CreateNFT from "../components/Admin/CreateNFT";
+import UpdateNFT from "../components/Admin/UpdateNFT";
+import RevokeNFT from "../components/Admin/RevokeNFT";
+import NFTList from "../components/Admin/NFTList";
+import { CreateProgram } from "../components/Admin/CreateProgram";
+import { CreateAcademicYear } from "../components/Admin/CreateAcademicYear";
+import { UpdateProgram } from "../components/Admin/UpdateProgram";
+import CertificateList from "../components/Admin/CertificateList";
+import PerformanceList from "../components/Admin/PerformanceList";
 
 function AdminPanel() {
-  const [key, setKey] = useState('create');
+  const [key, setKey] = useState("create");
 
   return (
     <Container className="my-5">
       <h1 className="mb-4 text-center">Panneau d'administration</h1>
-      <Tabs id="admin-tabs" activeKey={key} onSelect={(k) => setKey(k)} className="mb-3">
-        <Tab eventKey="create" title="Créer NFT">
+      <Tabs
+        id="admin-tabs"
+        activeKey={key}
+        onSelect={(k) => setKey(k)}
+        className="mb-3"
+      >
+        {/* <Tab eventKey="create" title="Créer NFT">
           <CreateNFT />
+        </Tab> */}
+        <Tab eventKey="createProgram" title="Créer un programme">
+          <CreateProgram />
         </Tab>
-        <Tab eventKey="update" title="Mettre à jour NFT">
+        {/* <Tab eventKey="updateProgram" title="Modifier un programme">
+          <UpdateProgram />
+        </Tab> */}
+        <Tab eventKey="createYear" title="Créer une année">
+          <CreateAcademicYear />
+        </Tab>
+        {/* <Tab eventKey="update" title="Mettre à jour NFT">
           <UpdateNFT />
-        </Tab>
+        </Tab> */}
         <Tab eventKey="revoke" title="Révoquer NFT">
           <RevokeNFT />
         </Tab>
-        <Tab eventKey="list" title="Liste des NFTs">
-          <NFTList />
+        <Tab eventKey="certList" title="Liste des Certificats">
+          <CertificateList />
+        </Tab>
+        <Tab eventKey="perfList" title="Liste des performances">
+          <PerformanceList />
         </Tab>
       </Tabs>
     </Container>

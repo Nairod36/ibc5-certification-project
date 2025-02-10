@@ -3,96 +3,112 @@ pragma solidity 0.8.28;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./IESGINFT.sol";
 
 /**
  * @title ESGICertificate
  * @dev Contrat NFT représentant le certificat d'un programme académique.
  */
-contract ESGICertificate is ERC721URIStorage, Ownable {
+contract ESGICertificate is ERC721URIStorage, Ownable, IESGINFT {
+    /// @notice Mapping des certificats émis par Token ID
+    mapping(uint256 => NFTInfo) private certificates;
 
+    /// @notice Compteur de tokens pour générer les IDs uniques des certificats
     uint256 public tokenCounter;
 
-    constructor() ERC721("ESGICertificate", "ESGI") Ownable(msg.sender) { tokenCounter = 0; }
-
-    // Structure pour stocker les informations du certificat
-    struct CertificateData {
-        string studentId;
-        string program;
-        string yearRange;       // Ex: "2022-2025"
-        string ipfsCID;         // CID pointant vers les métadonnées stockées sur IPFS
-        string status;          // Ex: "ACTIVE", "SUCCESS", "REVOKED"
-        uint256 certificateIssuedDate;
-        string comments;
-    }
-    // Mapping du tokenId vers les données du certificat
-    mapping(uint256 => CertificateData) public certificates;
-
-    // Événements pour suivre la création, la mise à jour et la révocation
-    event CertificateCreated(uint256 tokenId, string studentId, string program);
-    event CertificateUpdated(uint256 tokenId, string newIpfsCID, string newStatus);
-    event CertificateRevoked(uint256 tokenId);
-    
     /**
-     * @dev Crée un nouveau certificat NFT.
-     * @param _studentId L'identifiant de l'étudiant.
-     * @param _program Le programme d'études.
-     * @param _yearRange La période du programme.
-     * @param _ipfsCID Le CID des métadonnées sur IPFS.
-     * @param _comments Commentaires relatifs au certificat.
-     * @return tokenId Le tokenId du NFT créé.
+     * @notice Initialise le contrat et définit le propriétaire
+     */
+    constructor() ERC721("ESGICertificate", "ESGI") Ownable(msg.sender) {
+        tokenCounter = 0;
+    }
+
+    /// @notice Événement émis lorsqu'un certificat est créé
+    /// @param tokenId Identifiant unique du certificat
+    /// @param studentId Identifiant de l'étudiant associé au certificat
+    event CertificateCreated(uint256 tokenId, string studentId);
+
+    /// @notice Événement émis lorsqu'un certificat est mis à jour
+    /// @param tokenId Identifiant unique du certificat mis à jour
+    /// @param newIpfsCID Nouveau CID IPFS des métadonnées
+    event CertificateUpdated(uint256 tokenId, string newIpfsCID);
+
+    /// @notice Événement émis lorsqu'un certificat est révoqué
+    /// @param tokenId Identifiant unique du certificat révoqué
+    event CertificateRevoked(uint256 tokenId);
+
+    /**
+     * @notice Crée un nouveau certificat NFT pour un étudiant
+     * @dev Le certificat est stocké sur IPFS et enregistré sous forme de NFT ERC-721
+     * @param _studentId Identifiant unique de l'étudiant
+     * @param _ipfsCID CID IPFS des métadonnées du certificat
+     * @param _years Année(s) académique(s) concernée(s)
+     * @return tokenId Identifiant du NFT créé
      */
     function createCertificate(
         string memory _studentId,
-        string memory _program,
-        string memory _yearRange,
         string memory _ipfsCID,
-        string memory _comments
+        string memory _years
     ) public onlyOwner returns (uint256) {
         uint256 newTokenId = tokenCounter;
         _safeMint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, _ipfsCID);
-        certificates[newTokenId] = CertificateData({
+        certificates[newTokenId] = NFTInfo({
+            tokenId: newTokenId,
             studentId: _studentId,
-            program: _program,
-            yearRange: _yearRange,
             ipfsCID: _ipfsCID,
-            status: "ACTIVE",
-            certificateIssuedDate: block.timestamp,
-            comments: _comments
+            year: _years
         });
         tokenCounter++;
-        emit CertificateCreated(newTokenId, _studentId, _program);
+        emit CertificateCreated(newTokenId, _studentId);
         return newTokenId;
     }
 
     /**
-     * @dev Met à jour les métadonnées et le statut d'un certificat existant.
-     * @param _tokenId Le tokenId du NFT à mettre à jour.
-     * @param _newIpfsCID Le nouveau CID des métadonnées.
-     * @param _newStatus Le nouveau statut du certificat.
-     * @param _newComments Nouveaux commentaires.
+     * @notice Met à jour les métadonnées d'un certificat existant
+     * @dev Seul le propriétaire du contrat peut exécuter cette fonction
+     * @param _tokenId Identifiant du certificat à mettre à jour
+     * @param _newIpfsCID Nouveau CID IPFS des métadonnées mises à jour
      */
     function updateCertificate(
         uint256 _tokenId,
-        string memory _newIpfsCID,
-        string memory _newStatus,
-        string memory _newComments
+        string memory _newIpfsCID
     ) public onlyOwner {
         require(_ownerOf(_tokenId) != address(0), "Token ID n'existe pas");
-        certificates[_tokenId].ipfsCID = _newIpfsCID;
-        certificates[_tokenId].status = _newStatus;
-        certificates[_tokenId].comments = _newComments;
         _setTokenURI(_tokenId, _newIpfsCID);
-        emit CertificateUpdated(_tokenId, _newIpfsCID, _newStatus);
+        emit CertificateUpdated(_tokenId, _newIpfsCID);
     }
 
     /**
-     * @dev Révoque un certificat en modifiant son statut.
-     * @param _tokenId Le tokenId du NFT à révoquer.
+     * @notice Révoque un certificat existant
+     * @dev La révocation n'efface pas le NFT, mais le désactive sur l'application
+     * @param _tokenId Identifiant du certificat à révoquer
      */
     function revokeCertificate(uint256 _tokenId) public onlyOwner {
         require(_ownerOf(_tokenId) != address(0), "Token ID n'existe pas");
-        certificates[_tokenId].status = "REVOKED";
         emit CertificateRevoked(_tokenId);
+    }
+
+    /**
+     * @notice Récupère les informations d'un certificat spécifique
+     * @param _tokenId Identifiant du certificat à récupérer
+     * @return Structure NFTInfo contenant les détails du certificat
+     */
+    function getNFTInfos(
+        uint256 _tokenId
+    ) external view returns (NFTInfo memory) {
+        return certificates[_tokenId];
+    }
+
+    /**
+     * @notice Récupère la liste de tous les certificats créés
+     * @return Tableau contenant toutes les structures NFTInfo des certificats
+     */
+    function getAllNFTs() external view returns (NFTInfo[] memory) {
+        NFTInfo[] memory allCertificates = new NFTInfo[](tokenCounter);
+        for (uint256 i = 0; i < tokenCounter; i++) {
+            allCertificates[i] = certificates[i];
+        }
+        return allCertificates;
     }
 }

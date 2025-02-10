@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import ConnectWallet from './ConnectWallet';
 
 function Header() {
   return (
@@ -17,6 +18,7 @@ function Header() {
           </Nav>
         </Navbar.Collapse>
       </Container>
+      <ConnectWallet/>
     </Navbar>
   );
 }

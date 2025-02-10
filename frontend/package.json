@@ -3,15 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tanstack/react-query": "^5.66.0",
     "bootstrap": "^5.3.3",
     "cra-template": "1.2.0",
     "ethers": "^6.13.5",
     "ipfs-http-client": "^60.0.1",
+    "pinata-web3": "^0.5.4",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "uuid": "^11.0.5",
+    "viem": "^2.22.23",
+    "wagmi": "^2.14.11"
   },
   "scripts": {
     "start": "react-scripts start",
