@@ -147,6 +147,7 @@ export const CreateAcademicYear = () => {
         abi: contracts.NFTFactory.abi,
         functionName: "createPerformance",
         args: [formData.studentId, ipfsUrl, formData.year],
+        chainId: 43112,
       });
 
       setFormData({ ...formData, ipfsCID: ipfsUrl });

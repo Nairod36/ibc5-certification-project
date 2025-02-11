@@ -15,6 +15,7 @@ export const CertificateList = () => {
     address: contracts.NFTFactory.address,
     abi: contracts.NFTFactory.abi,
     functionName: "getAllCertificates",
+    chainId: 43112,
   });
 
   useEffect(() => {
