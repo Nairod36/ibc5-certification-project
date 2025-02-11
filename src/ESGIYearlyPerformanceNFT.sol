@@ -79,6 +79,7 @@ contract ESGIYearlyPerformanceNFT is ERC721URIStorage, Ownable, IESGINFT {
     ) public onlyOwner {
         require(_ownerOf(_tokenId) != address(0), "Token ID n'existe pas");
         _setTokenURI(_tokenId, _newIpfsCID);
+        performances[_tokenId].ipfsCID = _newIpfsCID;
         emit PerformanceUpdated(_tokenId, _newIpfsCID);
     }
 

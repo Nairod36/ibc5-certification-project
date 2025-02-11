@@ -76,6 +76,7 @@ contract ESGICertificate is ERC721URIStorage, Ownable, IESGINFT {
     ) public onlyOwner {
         require(_ownerOf(_tokenId) != address(0), "Token ID n'existe pas");
         _setTokenURI(_tokenId, _newIpfsCID);
+        certificates[_tokenId].ipfsCID = _newIpfsCID;
         emit CertificateUpdated(_tokenId, _newIpfsCID);
     }
 
