@@ -1,221 +1,157 @@
-# IBC-5 Certification Project 🚀
+# 🚀 IBC-5 Certification Project
 
-Bienvenue dans le dépôt du projet **IBC-5 Certification** ! Ce repo met en place une architecture **Foundry** (pour la partie smart contracts) et **React** (pour le frontend), ainsi qu'un dossier dédié à la configuration Avalanche Subnet et un dossier pour les métadonnées NFT.
+<p style="align: center;">
+	<img src="https://img.shields.io/badge/Foundry-Tooling-5E2D88?style=for-the-badge&logo=foundry"/>
+	<img src="https://img.shields.io/badge/Solidity-%23363636.svg?style=for-the-badge&logo=solidity&logoColor=white"/>
+	<img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react"/>
+	<img src="https://img.shields.io/badge/Avalanche-Subnet_Local-E84142?style=for-the-badge&logo=avalanche"/>
+	<img src="https://img.shields.io/badge/Wagmi-React_Adapters-FFD700?style=for-the-badge&logo=wagmi"/>
+	<img src="https://img.shields.io/badge/IPFS-Distributed_Storage-65C2CB?style=for-the-badge&logo=ipfs"/>
+</p>
 
----
-  
-## Table des matières 📖
-1. [Structure du projet](#structure-du-projet)
-2. [Pré-requis](#pré-requis)
-3. [Installation et Configuration](#installation-et-configuration)
-   - [1. Cloner le projet](#1-cloner-le-projet)
-   - [2. Installer Foundry](#2-installer-foundry)
-   - [3. Initialiser la partie Foundry](#3-initialiser-la-partie-foundry)
-   - [4. Initialiser la partie Frontend (React)](#4-initialiser-la-partie-frontend-react)
-   - [5. Démarrer le Subnet Avalanche (exemple)](#5-démarrer-le-subnet-avalanche-exemple)
-4. [Utilisation](#utilisation)
-   - [A. Build & Test des contrats (Foundry)](#a-build--test-des-contrats-foundry)
-   - [B. Scripts de déploiement (Foundry)](#b-scripts-de-déploiement-foundry)
-   - [C. Lancement du Frontend](#c-lancement-du-frontend)
-5. [Arborescence finale](#arborescence-finale)
-6. [Fichiers importants](#fichiers-importants)
-7. [Ressources et Documentation](#ressources-et-documentation)
 
----
-
-- **avalanche/** : Configurer et lancer votre **Subnet** personnalisé (Avalanche).
-- **foundry.toml** : Fichier de configuration Foundry.
-- **metadata/** : Stocker vos exemples de métadonnées NFT et scripts d’upload IPFS.
-- **script/** : Scripts Foundry (en Solidity ou TS) pour le déploiement et l’interaction.
-- **src/** : Vos contrats Solidity (MyProgramNFT, MyYearNFT, etc.).
-- **test/** : Tests Foundry pour valider la logique de vos smart contracts.
-- **frontend/** : Application React (panel d’admin + portail de vérification).
+## 📖 Table of Contents
+1. [Project Structure](#-project-structure)
+2. [Prerequisites](#⚙️-prerequisites)
+3. [Installation & Setup](#🔧-installation--setup)
+   - [1. Clone the Project](#1️⃣-clone-the-project)
+   - [2. Install Foundry](#2️⃣-install-foundry)
+   - [3. Initialize Foundry](#3️⃣-initialize-foundry)
+   - [4. Initialize the Frontend](#4️⃣-initialize-the-frontend)
+4. [Usage](#🌐-usage)
+   - [A. Build & Test Contracts](#🛠️-build--test-contracts)
+   - [B. Deployment Scripts](#📜-deployment-scripts)
+   - [C. Launch the Frontend](#🎨-launch-the-frontend)
+5. [Project Tree](#📂-project-tree)
+6. [Key Files](#✨-key-files)
+7. [Resources & Documentation](#📚-resources--documentation)
 
 ---
 
-## Pré-requis ⚙️
+## 📂 Project Structure
+- **avalanche/**: Configuration and management of the **Avalanche Subnet**.
+- **foundry.toml**: **Foundry** configuration file.
+- **script/**: Foundry scripts for **deployment & interactions**.
+- **src/**: Solidity smart contracts (**MyProgramNFT, MyYearNFT, etc.**).
+- **test/**: Foundry tests to **validate contract logic**.
+- **frontend/**: React application for **admin panel & verification portal**.
 
-- **Node.js** (version 14+ recommandée)
-- **npm** ou **yarn**
-- **Foundry** (forge, cast) : [Documentation Foundry](https://book.getfoundry.sh/)
+---
+
+## ⚙️ Prerequisites
+- **Node.js** (14+ recommended)
+- **npm** or **yarn**
+- **Foundry** ([Documentation](https://book.getfoundry.sh/))
 - **Git**
-- **Avalanche CLI** (optionnel) pour gérer le subnet, ou un client `avalanchego` local
+- **Avalanche CLI** (optional) or **`avalanchego` client**
 
 ---
 
-## Installation et Configuration 🔧
+## 🔧 Installation & Setup
 
-### 1. Cloner le projet
-
-Si vous partez d’un dépôt Git existant :
-
-```bash
-git clone <URL_DU_REPO> ibc5-certification-project
+### 1️⃣ Clone the Project
+```sh
+git clone https://github.com/Nairod36/ibc5-certification-project
 cd ibc5-certification-project
+```
 
-(Si vous créez un nouveau projet, vous pouvez simplement créer un dossier vide, l’initialiser avec git init, puis suivre la suite.)
-
-2. Installer Foundry
-
-Si vous n’avez pas encore Foundry :
-
+### 2️⃣ Install Foundry
+```sh
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
-
-Vérifiez l’installation :
-
 forge --version
+```
 
-3. Initialiser la partie Foundry
-	1.	Initialisation (si pas déjà fait) :
-
+### 3️⃣ Initialize Foundry
+```sh
 forge init .
-
-Cela crée les dossiers src/, script/, test/, lib/ et un fichier foundry.toml.
-
-	2.	Installation des dépendances (ex. OpenZeppelin, etc.) :
-
 forge install OpenZeppelin/openzeppelin-contracts
+```
 
-
-
-4. Initialiser la partie Frontend (React)
-	1.	Créer l’application React :
-
+### 4️⃣ Initialize the Frontend
+```sh
 npx create-react-app frontend
+cd frontend
+npm install
+```
 
+---
 
-	2.	Organisation interne :
-	•	Dans frontend/src/, créez par exemple :
+## 🌐 Usage
 
-mkdir admin
-mkdir public
-touch admin/AdminPanel.jsx
-touch public/VerificationPortal.jsx
-
-
-	•	Vous pouvez configurer un .env dans frontend/ pour gérer l’URL RPC du subnet, l’adresse de vos contrats, etc.
-
-5. Démarrer le Subnet Avalanche (exemple)
-
-Dans le dossier avalanche/, vous pouvez avoir :
-	•	config/ : fichiers JSON/YAML de configuration du subnet.
-	•	scripts/ : scripts Shell ou Node pour lancer le subnet local via avalanchego ou avalanche-cli.
-
-Exemple de script minimal deploy_subnet.sh :
-
-#!/bin/bash
-
-echo "=== Déploiement local du subnet ESGI ==="
-# Utiliser avalanche-cli ou avalanchego
-# avalanche subnet create esgiSubnet
-# avalanche subnet deploy esgiSubnet
-# etc.
-
-(À adapter selon votre configuration réelle.)
-
-Utilisation 🌐
-
-A. Build & Test des contrats (Foundry)
-
-Assurez-vous d’être à la racine du projet (où se trouve foundry.toml).
-	1.	Compilation :
-
+### 🛠️ Build & Test Contracts
+```sh
 forge build
-
-
-	2.	Tests :
-
 forge test
-
-Vous pouvez cibler un test précis :
-
 forge test --match-test testCreationNFT
+```
 
-
-
-B. Scripts de déploiement (Foundry)
-
-Dans script/, vous trouverez (par exemple) Deploy.s.sol, UpdateNFT.s.sol, etc.
-Pour exécuter un script :
-
+### 📜 Deployment Scripts
+```sh
 forge script script/Deploy.s.sol \
   --rpc-url http://127.0.0.1:9650/ext/bc/<SUBNET_ID>/rpc \
   --private-key <YOUR_PRIVATE_KEY> \
   --broadcast
+```
 
-(Le flag --broadcast exécute réellement les transactions après la simulation.)
-
-C. Lancement du Frontend
-	1.	Rendez-vous dans le dossier frontend/ :
-
+### 🎨 Launch the Frontend
+```sh
 cd frontend
-
-
-	2.	Installez les dépendances (si nécessaire) :
-
-npm install
-
-
-	3.	Démarrez l’application React :
-
 npm start
+```
 
+The application will be available at **http://localhost:3000**.
 
+---
 
-L’application sera disponible sur http://localhost:3000.
-
-Arborescence finale 📂
-
-Une fois tout configuré, vous devriez avoir :
-
+## 📂 Project Tree
+```
 ibc5-certification-project/
 ├── avalanche/
-│   ├── config/
-│   │   └── subnet-config.json
-│   ├── scripts/
-│   │   └── deploy_subnet.sh
-│   └── README.md
+│   ├── README.md
 ├── foundry.toml
-├── lib/
-├── metadata/
-│   ├── examples/
-│   │   ├── program-nft-metadata.json
-│   │   └── year-nft-metadata.json
-│   └── ipfs/
-│       └── (scripts d’upload IPFS)
 ├── script/
 │   ├── Deploy.s.sol
 │   ├── UpdateNFT.s.sol
-│   └── RevokeNFT.s.sol
+│   ├── RevokeNFT.s.sol
 ├── src/
-│   ├── MyProgramNFT.sol
-│   ├── MyYearNFT.sol
-│   └── NFTFactory.sol
+│   ├── ESGICertificate.sol
+│   ├── ESGIYearlyPerformanceNFT.sol
+│   ├── IESGINFT.sol
+│   ├── NFTFactory.sol
 ├── test/
-│   ├── MyProgramNFT.t.sol
-│   └── MyYearNFT.t.sol
+│   ├── ESGICertificate.t.sol
+│   ├── ESGIYearlyPerformanceNFT.t.sol
+│   ├── NFTFactory.t.sol
 ├── frontend/
-│   
-├── .env.example
-├── .gitignore
-└── README.md
+│   ├── .env
+├── README.md
+├── .env
+```
 
-Fichiers importants ✨
-	•	.env.example : Exemple de configuration d’environnement (RPC_URL, PRIVATE_KEY, etc.).
-	Note : N’oubliez pas de créer un .env (qui ne sera pas commité) avec vos vraies données sensibles.
-	•	avalanche/README.md : Explications sur la configuration et le lancement de votre Subnet Avalanche.
-	•	foundry.toml : Paramètres Foundry (version de Solidity, chemins, etc.).
-	•	frontend/README.md : Documentation spécifique au frontend (scripts npm, dépendances…).
-	•	README.md (ce fichier) : Guide global pour l’ensemble du projet.
+---
 
-Ressources et Documentation 📚
-	•	Foundry Book : https://book.getfoundry.sh/
-	•	Avalanche CLI : https://github.com/ava-labs/avalanche-cli
-	•	React : https://reactjs.org/docs/getting-started.html
-	•	Create React App : https://create-react-app.dev/
-	•	OpenZeppelin (librairies Solidity) : https://docs.openzeppelin.com/contracts/
+## ✨ Key Files
+- `.env.example`: Example environment configuration (`RPC_URL`, `PRIVATE_KEY`).
+- `avalanche/README.md`: **Avalanche Subnet** documentation.
+- `foundry.toml`: **Foundry** configuration settings.
+- `README.md`: **Main project guide**.
 
-Pour toute question ou suggestion, n’hésitez pas à ouvrir une issue ou à soumettre une pull request.
-Happy hacking! 😎
+---
 
+## 📚 Resources & Documentation
+- **[Foundry Book](https://book.getfoundry.sh/)**
+- **[Avalanche CLI](https://github.com/ava-labs/avalanche-cli)**
+- **[React](https://reactjs.org/docs/getting-started.html)**
+- **[OpenZeppelin](https://docs.openzeppelin.com/contracts/)**
+
+📩 **For any questions, open an issue or submit a PR!** 🚀
+
+<p style="align: center">
+    <a href="https://discord.com/users/243000753881481216">
+    <img src="https://img.shields.io/badge/-Nairod-gray?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2">
+    </a>
+    <a href="https://discord.com/users/360420244088422400">
+    <img src="https://img.shields.io/badge/-MattLvsr-gray?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2">
+    </a>
+</p>
